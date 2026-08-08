@@ -27,87 +27,87 @@ let persons = [
   {
     name: "javeed ali",
     number: "+92131",
-    id: "JBxyJrptEGY",
+    id: "0",
   },
   {
     name: "jawasd",
     number: "321312",
-    id: "mW-npMvYS1g",
+    id: "1",
   },
   {
     name: "ali zaman",
     number: "13231231",
-    id: "Ha04NDq2064",
+    id: "2",
   },
   {
     name: "Wajid Ullah",
     number: "+92 1231231",
-    id: "Ml3P6sxhPX4",
+    id: "3",
   },
   {
     name: "Faizan",
     number: "=93231",
-    id: "OiEKgId0L74",
+    id: "4",
   },
   {
     name: "Zaar Wali Khan",
     number: "+92 1231231213",
-    id: "-BsYlRSUMDA",
+    id: "5",
   },
   {
     name: "Farhad Khan",
     number: "+92 3131231",
-    id: "AviFGvCCDHQ",
+    id: "6",
   },
   {
     name: "Safwan Khan",
     number: "+92131231",
-    id: "-BkO1At-Ygw",
+    id: "7",
   },
   {
     name: "",
     number: "",
-    id: "6k6D-7Jw0VA",
+    id: "8",
   },
   {
     name: "Kamran",
     number: "+92 31231",
-    id: "gIuuKvp6_m8",
+    id: "9",
   },
   {
     name: "jjklajdalksjda",
     number: "fsdfsd",
-    id: "nHDsoG1Ul24",
+    id: "10",
   },
   {
     name: "jisdjdklasj",
     number: "uiweoufsd",
-    id: "nC9Egietd_U",
+    id: "12",
   },
   {
     name: "j.ksdahkjdha",
     number: "hjkfsdhfjsdfs",
-    id: "aEIQepERFbM",
+    id: "13",
   },
   {
     name: "Javaid electrician",
     number: "+9231321",
-    id: "3bQ6nHDAt1w",
+    id: "14",
   },
   {
     name: "jklj",
     number: "ksajda",
-    id: "LGjMTtrknZQ",
+    id: "15",
   },
   {
     name: "kjcxzjz",
     number: "jklj",
-    id: "mXNY-dfAjnk",
+    id: "16",
   },
   {
     name: "jkldkja",
     number: "jdkassda",
-    id: "rf7wQOr4jOU",
+    id: "17",
   },
 ];
 
@@ -139,12 +139,13 @@ app
       res.status(400).send({ error: "user name or number is missing" });
       return;
     }
-    if (
+    if ( // It is not working becuaese when match occur when go to post through window.confirm()
       persons.find(
         (each) =>
           each.name == newPerson.name || each.number == newPerson.number,
       )
     ) {
+      console.log("The number or name is duplicated loc = 148")
       res.status(400).send({
         error: `User with ${newPerson.name} name or ${newPerson.number} number already exists`,
       });
