@@ -139,13 +139,14 @@ app
       res.status(400).send({ error: "user name or number is missing" });
       return;
     }
-    if ( // It is not working becuaese when match occur when go to post through window.confirm()
+    if (
+      // It is not working becuaese when match occur when go to post through window.confirm()
       persons.find(
         (each) =>
           each.name == newPerson.name || each.number == newPerson.number,
       )
     ) {
-      console.log("The number or name is duplicated loc = 148")
+      console.log("The number or name is duplicated loc = 148");
       res.status(400).send({
         error: `User with ${newPerson.name} name or ${newPerson.number} number already exists`,
       });
@@ -157,6 +158,18 @@ app
     persons.push(newPerson);
     res.send(persons);
   });
+
+//  Put or update API handler
+app.put("/api/persons/:id", (req, res) => {
+  console.log("The new object we obtaind from the frontend = ", req.body);
+  let newPerson = req.body;
+  let maxId = Math.max(...persons.map((person) => Number(person.id)));
+  newPerson.id = String(maxId + 1);
+  persons = persons.filter((each) => each.id !== req.params.id);
+  persons.push(newPerson);
+  res.send({ message: "User info is updated " });
+});
+
 app.listen(PORT, () => {
   console.log("The server is listening to the localhost on port = ", PORT);
 });

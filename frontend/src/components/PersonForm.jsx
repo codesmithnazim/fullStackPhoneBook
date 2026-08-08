@@ -30,7 +30,7 @@ function PersonForm({
 // Update function
         phonebookServices
           .updateNumber(id, form)
-          .then((res) => setRefresh((a) => !a));
+          .then((res) => setRefresh((a) => !a));// Now you can do setPersons() as well, becuase express returns array of all users
         return;
       } else {
         return;
