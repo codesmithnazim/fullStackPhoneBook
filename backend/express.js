@@ -3,7 +3,7 @@ import morgan from "morgan";
 import "dotenv/config";
 import path from "path";
 const app = express();
-const PORT = process.env.EXPRESS_PORT;
+const PORT = process.env.EXPRESS_PORT || 3001;
 app.use(express.json());
 app.use(express.static(path.join(process.cwd(), "dist")));
 morgan.token("body", (req) => {
