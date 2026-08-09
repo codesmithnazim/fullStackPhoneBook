@@ -3,7 +3,7 @@ import morgan from "morgan";
 import "dotenv/config";
 import path from "path";
 const app = express();
-const PORT = process.env.EXPRESS_PORT || 3001;
+const PORT = process.env.EXPRESS_PORT;
 app.use(express.json());
 app.use(express.static(path.join(process.cwd(), "dist")));
 morgan.token("body", (req) => {
@@ -112,6 +112,9 @@ let persons = [
 ];
 
 app
+  .get("/", (req, res) => {
+    res.send("Welcome to the full stack notes,I'm Express server how I can serve you. ")
+  })
   .get("/api/persons", (req, res) => {
     res.send(persons);
   })
