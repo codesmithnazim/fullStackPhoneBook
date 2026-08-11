@@ -2,6 +2,8 @@ import express, { json } from "express";
 import morgan from "morgan";
 import "dotenv/config";
 import path from "path";
+import mongoose from "mongoose";
+
 const app = express();
 const PORT = process.env.EXPRESS_PORT;
 app.use(express.json());
