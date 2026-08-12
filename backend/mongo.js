@@ -34,11 +34,18 @@ const Notes = mongoose.model("Note", noteSchema);
 //   important: Math.random < 0.5,
 // });
 
-Notes.create({
-  content:
-    "We will make wonderfull websites with good performances , Insha'Allah soon ",
-  important:1
-}).then((res) => {
-  console.log("the mongodb response after try to insert the document = ", res);
-  mongoose.connection.close();
-});
+// Notes.create({
+//   content:
+//     "We will make wonderfull websites with good performances , Insha'Allah soon ",
+//   important:1
+// }).then((res) => {
+//   console.log("the mongodb response after try to insert the document = ", res);
+//   mongoose.connection.close();
+// });
+
+// Notes.find({}).where({content:"13242342"}).then(res=>{console.log(res); mongoose.connection.close()})
+Notes.find().then(res=>{res.forEach(note=>
+    console.log(note)
+); 
+console.log("total number of stored notes = ", res.length)
+mongoose.connection.close() })
