@@ -53,10 +53,11 @@ const App = () => {
       <ul style={{ listStyle: "none" }}>
         {filteresPersonas.map((person) => (
           <EntirePerson
-            key={person.id}
+            key={person._id}
             person={person}
             setPersons={setPersons}
             setNegativeNotification={setNegativeNotification}
+            setPersons={setPersons}
           />
         ))}
       </ul>

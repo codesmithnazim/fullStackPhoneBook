@@ -2,60 +2,51 @@ import { useState } from "react";
 import phonebookServices from "../services/phonebook";
 function PersonForm({
   persons,
+  setPersons,
   setRefresh,
   setGreenNotification,
   setRedNotification,
 }) {
-  //   const [name, setname] = useState("");
-  //   const [number, setnumber] = useState(""); //We can not make and maintain separate states for different inpputs in general forms
-  const [form, setForm] = useState({ name: "", number: "" });
-  // console.log("the form object =", form);
+
+  const [form, setForm] = useState({ name: "", phone: "" });
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    if (
+    if(!form.name || !form.phone){
+      setRedNotification("Phone number or name is missing")
+      setTimeout(() => {
+        setRedNotification('')
+      }, 1300)
+      return;
+    }
+   else if (
       persons.some((person) => {
         return person.name === form.name;
       })
     ) {
       if (
         window.confirm(
-          `${form.name} is already added to phonebook , Do you wanna replace old number with the new  number`,
+          `${form.name} is already added to phonebook , Do you wanna replace old phone-number with the new  number`,
         )
       ) {
         // Find and search are working for same purpose but search return us an array while find return us the first founded object only not array
-        const id = persons.find((each) => each.name === form.name).id; //Here we'll get the id of the specific person we want to change the number
+        const _id = persons.find((each) => each.name === form.name)._id; //Here we'll get the id of the specific person we want to change the number
         // let id=array[0].id
-        console.log("Ok, we are replacing.... and the id giver = ", id);
+        console.log("Ok, we are replacing the person with id = ", _id);
 
-// Update function
-        phonebookServices
-          .updateNumber(id, form)
-          .then((res) => setRefresh((a) => !a));// Now you can do setPersons() as well, becuase express returns array of all users
+        // Update function
+        phonebookServices // it'll called if the above if get true.
+          .updateNumber(_id, form.phone)
+          .then((mongoRes) => setPersons(persons.filter(person=>person._id===_id? mongoRes:person))).catch(error=>console.trace(error))
         return;
       } else {
         return;
       }
-    } else if (
-      persons.some((person) => {
-        return person.number === form.number;
-      })
-    ) {
-      setRedNotification(`${form.number} is already exist in the phonebook `);
-      setTimeout(() => {
-        setRedNotification("");
-      }, 2500);
-
-      return;
     }
-    // setPersons((persons) => [
-    //   ...persons,
-    //   { name: form.name, number: form.number, id: crypto.randomUUID() },
-    // ]);
 
     // axios //Axios makes the things easy for us such as the one example is given below
     //   .post("http://localhost:3001/persons", form)
 
-    // fetch("/api/persons", {   //You can check difference between fetch and axios now here.
+    // fetch("/api/persons", {   //You can check difference between fetch and axios now here. fetch does not care status, I mean it suppose that request was successful, if res.send() occur in express, even res.status(404).send({error:error})
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
@@ -64,17 +55,20 @@ function PersonForm({
     // })
 
     phonebookServices.addPerson(form)
-      .then((res) => {
+      .then((mongoRes) => {
+        // setRefresh((before) => !before);
+        setPersons(persons.concat(mongoRes.data))
+        console.log("Updated persons = ", persons)
+        console.log("the responce we get from the express through post request = ", mongoRes.data);
         setGreenNotification("User is added successfully ....");
-        setRefresh((before) => !before);
-        console.log("the responce we get from the express through post request = ", res);
         setTimeout(() => {
           setGreenNotification("");
         }, 3000);
       })
       .catch((error) =>{
-        console.log("the catch from the PersonForm component,and the error =  ",  error.response.data),
-          setRedNotification(error.response.data.error)
+        console.log("the catch from the PersonForm component,and the error =  ",  error?.response?.data?.message);
+        let message=`${Object.entries( error?.response?.data?.message).map(([key,value])=> value)} Number already exists`
+          setRedNotification(message)
           setTimeout(() => {
             setRedNotification("")
           }, 2500)
@@ -85,7 +79,7 @@ function PersonForm({
     // form.number("");
     // setForm((entity)=>{...entity, name:"", number:""} )
     setForm((entity) => {
-      return { ...entity, name: "", number: "" };
+      return { ...entity, name: "", phone: "" };
     });
   };
   return (
@@ -102,10 +96,10 @@ function PersonForm({
       <div>
         number:{" "}
         <input
-          value={form.number}
+          value={form.phone}
           onChange={(e) => {
             setForm((entity) => {
-              return { ...entity, number: e.target.value };
+              return { ...entity, phone: e.target.value };
             });
           }}
         />

@@ -4,20 +4,18 @@ function EntirePerson({ person,  setPersons, setNegativeNotification }) {
     if(window.confirm(`Do you really want to delete ${person.name} from your phonebook`)){
     e.target.style.backgroundColor = "blue";
     phonebookServices
-      .deletePerson(person.id)
+      .deletePerson(person._id)
       .then((res) => {
         // setRefresh((before) => !before);
-        setPersons(persons=>persons.filter(individual=>individual.id!=person.id))
+        setPersons(persons=>persons.filter(individual=>individual._id!=person._id))
         setNegativeNotification(`Information of ${person.name} is deleted successfuly from the server `)
         setTimeout(() => {
           setNegativeNotification('')
         }, 3000)
-        
-
       })
       .catch((error) =>
-        console.log(
-          "catch of loc 20 n entirePErson compoent and the error = ",
+        console.trace(
+          "catch of EntirePerson component and the error = ",
           error,
         ),
       );
@@ -26,7 +24,7 @@ function EntirePerson({ person,  setPersons, setNegativeNotification }) {
   };
   return (
     <li>
-      {person.name} {person.number}{" "}
+      {person.name} {person.phone}{" "}
       <button onClick={deleteHandler}>delete</button>
     </li>
   );

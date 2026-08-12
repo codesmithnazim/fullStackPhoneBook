@@ -5,7 +5,7 @@ function Search({ persons, setFilteresPersonas }) {
   useEffect(() => {
     const changePersons = () => {
       console.log("ctrl of exec... came in search comp...");
-      let filteredPersons = persons.filter((e) => e.name.toLowerCase().includes(query.toLowerCase()));
+      let filteredPersons = persons.filter((e) => e.name?.toLowerCase().includes(query.toLowerCase()));
       setFilteresPersonas(filteredPersons);
     };
     changePersons();
