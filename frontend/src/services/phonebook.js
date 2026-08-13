@@ -8,11 +8,11 @@ const deletePerson = (id) => {
 
 const updateNumber = (id, newNumber) => {
   console.log("the id and phone number sended towards backend = ", id,newNumber)
-  return axios.patch(`${baseUrl}/${id}`, newNumber).then((res) => res.data);
+  return axios.patch(`${baseUrl}/${id}`, {newNumber}).then((res) => res.data);
 };
 
 const addPerson = (person) => {
-  return axios.post("/api/persons", person);
+  return axios.post("/api/persons", person)
 };
 
 export default {
@@ -20,4 +20,3 @@ export default {
   updateNumber,
   addPerson,
 };
-git

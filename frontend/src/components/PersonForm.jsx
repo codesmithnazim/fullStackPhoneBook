@@ -7,18 +7,16 @@ function PersonForm({
   setGreenNotification,
   setRedNotification,
 }) {
-
   const [form, setForm] = useState({ name: "", phone: "" });
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    if(!form.name || !form.phone){
-      setRedNotification("Phone number or name is missing")
+    if (!form.name || !form.phone) {
+      setRedNotification("Phone number or name is missing");
       setTimeout(() => {
-        setRedNotification('')
-      }, 1300)
+        setRedNotification("");
+      }, 1300);
       return;
-    }
-   else if (
+    } else if (
       persons.some((person) => {
         return person.name === form.name;
       })
@@ -29,14 +27,25 @@ function PersonForm({
         )
       ) {
         // Find and search are working for same purpose but search return us an array while find return us the first founded object only not array
-        const _id = persons.find((each) => each.name === form.name)._id; //Here we'll get the id of the specific person we want to change the number
+        let _id = persons.find((each) => each.name === form.name)._id; //Here we'll get the id of the specific person we want to change the number
         // let id=array[0].id
         console.log("Ok, we are replacing the person with id = ", _id);
 
         // Update function
         phonebookServices // it'll called if the above if get true.
           .updateNumber(_id, form.phone)
-          .then((mongoRes) => setPersons(persons.filter(person=>person._id===_id? mongoRes:person))).catch(error=>console.trace(error))
+          .then((mongoRes) => {
+            console.log(
+              "the updated person number object returned to the frontend ",
+              mongoRes,
+            );
+              setPersons(allPersons=>allPersons.map(person=>person._id == _id ? mongoRes : person))
+            console.log(
+              "update process is completed and the resulted ",
+              persons,
+            );
+          })
+          .catch((error) => console.trace(error.response.data.error));
         return;
       } else {
         return;
@@ -54,27 +63,32 @@ function PersonForm({
     //   body: JSON.stringify(form),
     // })
 
-    phonebookServices.addPerson(form)
+    phonebookServices
+      .addPerson(form)
       .then((mongoRes) => {
         // setRefresh((before) => !before);
-        setPersons(persons.concat(mongoRes.data))
-        console.log("Updated persons = ", persons)
-        console.log("the responce we get from the express through post request = ", mongoRes.data);
+        setPersons(persons.concat(mongoRes.data));
+        console.log("Updated persons = ", persons);
+        console.log(
+          "the responce we get from the express through post request = ",
+          mongoRes.data,
+        );
         setGreenNotification("User is added successfully ....");
         setTimeout(() => {
           setGreenNotification("");
         }, 3000);
       })
-      .catch((error) =>{
-        console.log("the catch from the PersonForm component,and the error =  ",  error?.response?.data?.message);
-        let message=`${Object.entries( error?.response?.data?.message).map(([key,value])=> value)} Number already exists`
-          setRedNotification(message)
-          setTimeout(() => {
-            setRedNotification("")
-          }, 2500)
-          
-      }
-      );
+      .catch((error) => {
+        console.log(
+          "the catch from the PersonForm component,and the error =  ",
+          error?.response?.data?.message,
+        );
+        let message = `${Object.entries(error?.response?.data?.message).map(([key, value]) => value)} Number already exists`;
+        setRedNotification(message);
+        setTimeout(() => {
+          setRedNotification("");
+        }, 2500);
+      });
     // form.name("");
     // form.number("");
     // setForm((entity)=>{...entity, name:"", number:""} )

@@ -123,7 +123,9 @@ app
     PhoneBook.find().then((mongoRes) => res.send(mongoRes));
   })
   .get("/api/persons/:id", (req, res) => {
-    res.send(persons.find((person) => person._id == req.params._id));
+    // res.send(PhoneBook.findById ((person) => person._id == req.params._id));
+    PhoneBook.findById(req.params.id).then(mongoRes=>res.status(200).send(mongoRes))
+    .catch((error)=>{console.log(error); res.status(400).json({error:error.response.data})})
   })
   .get("/info", (req, res) => {
     console.log(req.requestTime);
@@ -185,10 +187,10 @@ app
 //  Put or update API handler
 app.patch("/api/persons/:id", (req, res) => {
   let {id}= req.params
-  console.log("The new object we obtaind from the frontend = ", req.body);
-  let newPhoneNumber = req.body;
+  console.log("The new phonenumber we obtaind from the frontend and its person id ", req.body.newNumber, id);
+  let newPhoneNumber = req.body.newNumber
   // persons.push(newPerson);
-  PhoneBook.findByIdAndUpdate(id,{phone: newPhoneNumber} ).then(mongoRes=>res.send(mongoRes))
+  PhoneBook.findByIdAndUpdate(id,{phone: newPhoneNumber} ,{returnDocument: 'after'}).then(mongoRes=>res.send(mongoRes))
   .catch(error=>{
     console.trace("error from the monogdb while updating the number", error)
     res.status(404).json({error})
