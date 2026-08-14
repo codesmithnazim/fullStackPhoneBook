@@ -44,6 +44,8 @@ function PersonForm({
               "update process is completed and the resulted ",
               persons,
             );
+            form.name=''
+            form.phone=''
           })
           .catch((error) => console.trace(error.response.data.error));
         return;
