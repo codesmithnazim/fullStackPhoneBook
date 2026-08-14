@@ -68,7 +68,7 @@ app
     // .catch((error)=>{console.log(error); res.status(400).json({error:error})})
     .catch(error=> next(error))
   })
-  .get("/info", (req, res,next) => {
+  .get("/api/info", (req, res,next) => {
     // console.log(req.requestTime);
     PhoneBook.find().then(mongoRes=>{
      if (!mongoRes) return res.status(404).end()
