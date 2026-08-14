@@ -29,7 +29,7 @@ function PersonForm({
         // Find and search are working for same purpose but search return us an array while find return us the first founded object only not array
         let _id = persons.find((each) => each.name === form.name)._id; //Here we'll get the id of the specific person we want to change the number
         // let id=array[0].id
-        console.log("Ok, we are replacing the person with id = ", _id);
+        console.log("Ok, we are replacing the phone number of the person with id = ", _id);
 
         // Update function
         phonebookServices // it'll called if the above if get true.

@@ -2,7 +2,8 @@ import phonebookServices from "../services/phonebook";
 function EntirePerson({ person,  setPersons, setNegativeNotification }) {
   const deleteHandler = (e) => {
     if(window.confirm(`Do you really want to delete ${person.name} from your phonebook`)){
-    e.target.style.backgroundColor = "blue";
+    e.target.style.backgroundColor = "red";
+    e.target.style.color="white";
     phonebookServices
       .deletePerson(person._id)
       .then((res) => {
@@ -25,7 +26,7 @@ function EntirePerson({ person,  setPersons, setNegativeNotification }) {
   return (
     <li>
       {person.name} {person.phone}{" "}
-      <button onClick={deleteHandler}>delete</button>
+      <button onClick={deleteHandler} style={{overflow:"hidden"}}>delete</button>
     </li>
   );
 }
