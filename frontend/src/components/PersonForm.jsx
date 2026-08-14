@@ -83,13 +83,14 @@ function PersonForm({
       .catch((error) => {
         console.log(
           "the catch from the PersonForm component,and the error =  ",
-          error?.response?.data?.message,
+          error?.response?.data?.error,
         );
-        let message = `${Object.entries(error?.response?.data?.message).map(([key, value]) => value)} Number already exists`;
+        // let message = `${Object.entries(error?.response?.data?.message).map(([key, value]) => value)} Number already exists`;
+        let message = error?.response?.data?.error
         setRedNotification(message);
         setTimeout(() => {
           setRedNotification("");
-        }, 2500);
+        }, 15000);
       });
     // form.name("");
     // form.number("");
