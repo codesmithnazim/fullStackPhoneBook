@@ -8,7 +8,6 @@ import RedNotification from "./components/RedNotification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [filteresPersonas, setFilteresPersonas] = useState([]);
   const [PositiveNotification, setpositiveNotification] = useState("");
   const [negativeNotification, setNegativeNotification] = useState("");
@@ -29,7 +28,7 @@ const App = () => {
       .finally(() =>
         console.log("The data is successfully fetched from the json server"),
       );
-  }, [refresh]);
+  }, []);
 
   return (
     <div>
@@ -44,7 +43,6 @@ const App = () => {
       <PersonForm
         persons={persons}
         setPersons={setPersons}
-        setRefresh={setRefresh}
         setGreenNotification={setpositiveNotification}
         setRedNotification={setNegativeNotification}
       />
